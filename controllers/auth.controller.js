@@ -48,7 +48,7 @@ async function upsertUser(githubUser) {
 }
 
 function setAuthCookies(res, { access_token, refresh_token }) {
-    const opts = { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" };
+    const opts = { httpOnly: true, sameSite: "none", secure: true };
     res.cookie("access_token",  access_token,  { ...opts, maxAge: 3  * 60 * 1000 });
     res.cookie("refresh_token", refresh_token, { ...opts, maxAge: 5  * 60 * 1000 });
 }
