@@ -65,6 +65,10 @@ function setAuthCookies(res, { access_token, refresh_token }) {
  * Web flow: redirect browser to GitHub OAuth page
  */
 export async function githubLogin(req, res) {
+    // Add CORS headers explicitly for browser requests
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+
     const state       = randomState();
     const redirectUri = `${SERVER_URL}/auth/github/callback`;
 

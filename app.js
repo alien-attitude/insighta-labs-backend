@@ -3,7 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { requestLogger } from "./middlewares/requestLogger.middleware.js";
 import profilesRoute from "./routes/profile.route.js";
-import authRoute     from "./routes/auth.route.js";
+import authRoute     from "./routes/auth.route.js"
+import usersRoute from "./routes/users.route.js";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use((err, req, res, next) => {
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 app.use("/auth",         authRoute);
+app.use("/api/users", usersRoute)
 app.use("/api/profiles", profilesRoute);
 
 app.get("/health", (req, res) => res.json({ status: "ok", timestamp: new Date().toISOString() }));
