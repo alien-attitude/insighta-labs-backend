@@ -48,9 +48,14 @@ async function upsertUser(githubUser) {
 }
 
 function setAuthCookies(res, { access_token, refresh_token }) {
-    const opts = { httpOnly: true, sameSite: "none", secure: true };
-    res.cookie("access_token",  access_token,  { ...opts, maxAge: 3  * 60 * 1000 });
-    res.cookie("refresh_token", refresh_token, { ...opts, maxAge: 5  * 60 * 1000 });
+    const isProd = process.env.NODE_ENV === "production";
+    const opts = {
+        httpOnly: true,
+        sameSite: isProd ? "none" : "lax",
+        secure:   isProd,
+    };
+    res.cookie("access_token",  access_token,  { ...opts, maxAge: 3 * 60 * 1000 });
+    res.cookie("refresh_token", refresh_token, { ...opts, maxAge: 5 * 60 * 1000 });
 }
 
 // ── Controllers ───────────────────────────────────────────────────────────────
@@ -250,8 +255,9 @@ export async function logout(req, res) {
     }
 
     // Clear cookies if web session
-    res.clearCookie("access_token");
-    res.clearCookie("refresh_token");
+    const isProd = process.env.NODE_ENV === "production";
+    res.clearCookie("access_token",  { sameSite: isProd ? "none" : "lax", secure: isProd });
+    res.clearCookie("refresh_token", { sameSite: isProd ? "none" : "lax", secure: isProd });
 
     return res.status(200).json({ status: "success", message: "Logged out successfully" });
 }

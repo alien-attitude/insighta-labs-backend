@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import { requestLogger } from "./middlewares/requestLogger.middleware.js";
 import profilesRoute from "./routes/profile.route.js";
 import authRoute     from "./routes/auth.route.js";
-import { FRONTEND_URL } from "./config/env.js";
 
 const app = express();
 
@@ -17,7 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
     cors({
-        origin:      [FRONTEND_URL, /localhost/],
+        origin: [
+            "https://insighta-labs-web-xi.vercel.app",
+            /localhost/
+        ],
         credentials: true,
         methods:     ["GET", "POST", "DELETE", "OPTIONS", "PUT", "PATCH"],
         allowedHeaders: ["Content-Type", "Authorization", "X-API-Version", "X-CSRF-Token"],
