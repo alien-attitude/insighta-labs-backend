@@ -141,10 +141,12 @@ export async function githubCallback(req, res) {
 
         const tokens = await issueTokenPair(user);
 
-        // Web flow → set HTTP-only cookies and redirect to portal
+        // In githubCallback — replace the web redirect part
         if (pkce.source === "web") {
-            setAuthCookies(res, tokens);
-            return res.redirect(`${FRONTEND_URL}/dashboard`);
+            const redirectUrl = new URL(`${FRONTEND_URL}/auth/callback`);
+            redirectUrl.searchParams.set("access_token",  tokens.access_token);
+            redirectUrl.searchParams.set("refresh_token", tokens.refresh_token);
+            return res.redirect(redirectUrl.toString());
         }
 
         // Should not reach here for web — safety fallback
