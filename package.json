@@ -1,0 +1,29 @@
+{
+  "name": "insighta-backend",
+  "version": "3.0.0",
+  "description": "Insighta Labs+ — Profile Intelligence API with Auth",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=production MONGODB_URI=mongodb+srv://alienaattitude:trialends@cluster0.uxsaym5.mongodb.net/?appName=Cluster0 nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.15.0",
+    "cookie-parser": "~1.4.4",
+    "cookieparser": "^0.1.0",
+    "cors": "^2.8.6",
+    "debug": "~2.6.9",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.4.1",
+    "morgan": "~1.9.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.14"
+  }
+}

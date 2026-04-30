@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for syntax errors
+        run: node --check server.js app.js config/env.js
+
+      - name: Verify all imports resolve
+        run: |
+          node --input-type=module << 'EOF'
+          import('./models/user.model.js');
+          import('./models/profile.model.js');
+          import('./models/refreshToken.model.js');
+          import('./services/token.service.js');
+          import('./middlewares/authenticate.middleware.js');
+          import('./middlewares/apiVersion.middleware.js');
+          console.log('All imports resolved');
+          EOF
+        env:
+          MONGODB_URI: mongodb://localhost/test
+          JWT_SECRET: test-secret
+          GITHUB_CLIENT_ID: test
+          GITHUB_CLIENT_SECRET: test
